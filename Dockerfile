@@ -20,3 +20,4 @@ RUN a2enmod rewrite
 #Xdebug
 RUN pecl install xdebug-3.3.2
 ADD xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
