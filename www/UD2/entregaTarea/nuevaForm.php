@@ -8,15 +8,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Header -->
-    <?php include 'header.php'; ?>
+    <?php include_once ('header.php'); ?>
 
     <div class="container-fluid">
         <div class="row">
-            <!-- Menu -->
-            <?php include 'menu.php'; ?>
+            <?php include_once ('menu.php'); ?>
 
-            <!-- Main Content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h2>Crear Nueva Tarea</h2>
@@ -25,7 +22,7 @@
                     <form action="nueva.php" method="POST" class="mb-5">
                         <div class="mb-3">
                             <label class="form-label">Título de la tarea</label>
-                            <input type="text" name="titulo" class="form-control" required>
+                            <input type="text" name="id" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Descripción</label>
@@ -47,7 +44,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <?php include 'footer.php'; ?>
+    <?php include_once('footer.php'); ?>
 </body>
 </html>

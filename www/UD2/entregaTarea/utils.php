@@ -1,8 +1,29 @@
 <?php
-// utils.php
 
-// Array global que almacenará las tareas
-$globalTareas = [];
+$globalTareas = [
+    [
+        [
+            'id' => 1,
+            'descripcion' => 'Corregir tarea unidad 2 grupo A',
+            'estado' => 'Pendiente'
+        ],
+        [
+            'id' => 2,
+            'descripcion' => 'Corregir tarea unidad 2 grupo A',
+            'estado' => 'Pendiente'
+        ],
+        [
+            'id' => 3,
+            'descripcion' => 'Preparación unidad 3',
+            'estado' => 'En proceso'
+        ],
+        [
+            'id' => 4,
+            'descripcion' => 'Publicar en github solución de la tarea unidad 2',
+            'estado' => 'Completada'
+        ]
+    ]
+];
 
 // Función para devolver el listado de tareas
 function obtenerTareas() {
@@ -12,41 +33,33 @@ function obtenerTareas() {
 
 // Función para filtrar contenido
 function filtrarContenido($contenido) {
-    // Eliminar caracteres especiales y espacios duplicados
-    $contenido = trim($contenido); // Eliminar espacios al inicio y al final
-    $contenido = preg_replace('/\s+/', ' ', $contenido); // Reemplazar múltiples espacios por uno solo
-    $contenido = htmlspecialchars($contenido); // Convertir caracteres especiales a entidades HTML
+    $contenido = trim($contenido);
+    $contenido = stripslashes($contenido);
+    $contenido = htmlspecialchars($contenido);
     return $contenido;
 }
 
 // Función para comprobar si un campo contiene información de texto válida
 function esTextoValido($texto) {
-    $textoFiltrado = filtrarContenido($texto);
-    return !empty($textoFiltrado); // Debe ser no vacío tras filtrar
+    return !empty(filtrarContenido($texto));
 }
 
 // Función para guardar una tarea de forma simulada
-function guardarTarea($titulo, $descripcion, $estado) {
+function guardarTarea($id, $descripcion, $estado) {
     global $globalTareas;
 
-    // Filtrar y validar campos
-    $tituloFiltrado = filtrarContenido($titulo);
-    $descripcionFiltrada = filtrarContenido($descripcion);
-    $estadoFiltrado = filtrarContenido($estado);
-
-    if (esTextoValido($tituloFiltrado) && esTextoValido($descripcionFiltrada) && esTextoValido($estadoFiltrado)) {
-        // Crear un nuevo array para la tarea
+    if (esTextoValido($id) && esTextoValido($descripcion) && esTextoValido($estado)) {
         $nuevaTarea = [
-            'id' => count($globalTareas) + 1, // Asignar un ID único
-            'descripcion' => $descripcionFiltrada,
-            'estado' => $estadoFiltrado
+            'id' => filtrarContenido($id),
+            'descripcion' => filtrarContenido($descripcion) ,
+            'estado' => filtrarContenido($estado)
         ];
 
-        // Agregar la nueva tarea al array global
-        $globalTareas[] = $nuevaTarea;
+        array_push($globalTareas, $nuevaTarea);
 
         return true; // Simular que se guardó correctamente
+    } else {
+        return false;
     }
 
-    return false; // No se pudo guardar la tarea
 }

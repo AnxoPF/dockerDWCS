@@ -1,11 +1,10 @@
-<!-- nueva.php -->
 <?php
-include 'utils.php'; // Asegúrate de que este archivo existe y tiene el método que necesitas
+include_once('utils.php');
 
 $errores = [];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $titulo = $_POST['titulo'] ?? '';
+    $titulo = $_POST['id'] ?? '';
     $descripcion = $_POST['descripcion'] ?? '';
     $prioridad = $_POST['prioridad'] ?? '';
 

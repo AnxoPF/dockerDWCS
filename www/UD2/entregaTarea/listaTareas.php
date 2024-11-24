@@ -1,4 +1,3 @@
-<!-- listaTareas.php -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,15 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Header -->
-    <?php include 'header.php'; ?>
+    <?php include_once('header.php'); ?>
 
     <div class="container-fluid">
         <div class="row">
-            <!-- Menu -->
-            <?php include 'menu.php'; ?>
+            <?php include_once('menu.php'); ?>
 
-            <!-- Main Content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h2>Lista de Tareas</h2>
@@ -33,16 +29,18 @@
                             </thead>
                             <tbody>
                                 <?php
-                                include 'utils.php'; // Asegúrate de que este archivo tiene la función para recuperar tareas
-                                $tareas = obtenerTareas(); // Asegúrate de que esta función está definida y retorna un array de tareas
+                                    require_once('utils.php');
+                                    $tareas = obtenerTareas(); 
 
-                                foreach ($tareas as $tarea): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($tarea['id']); ?></td>
-                                        <td><?php echo htmlspecialchars($tarea['descripcion']); ?></td>
-                                        <td><?php echo htmlspecialchars($tarea['estado']); ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
+                                    foreach ($tareas as $tarea)
+                                    {
+                                        echo '<tr>';
+                                        echo '<td>' . $tarea['id'] . '</td>';
+                                        echo '<td>' . $tarea['descripcion'] . '</td>';
+                                        echo '<td>' . $tarea['estado'] . '</td>';
+                                        echo '</tr>';
+                                    }
+                                 ?>
                             </tbody>
                         </table>
                     </div>
@@ -51,7 +49,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <?php include 'footer.php'; ?>
+    <?php include_once('footer.php'); ?>
 </body>
 </html>
