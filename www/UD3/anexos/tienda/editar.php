@@ -51,7 +51,7 @@
                             if (!$error)
                             {
                                 require_once('database.php');
-                                $resultado = actualizaUsuario($id, filtraCampo($nombre), filtraCampo($apellidos), filtraCampo($edad), filtraCampo($nombre));
+                                $resultado = actualizaUsuario($id, filtraCampo($nombre), filtraCampo($apellidos), filtraCampo($edad), filtraCampo($provincia));
                                 if ($resultado[0])
                                 {
                                     echo '<div class="alert alert-success" role="alert">Usuario actualizado correctamente.</div>';
