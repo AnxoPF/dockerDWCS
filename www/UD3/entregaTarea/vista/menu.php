@@ -7,6 +7,21 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="init.php">
+                    Inicializar
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="usuarios/usuarios.php">
+                    Lista de usuarios (PDO)
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="usuarios/nuevoUsuarioForm.php">
+                    Nuevo usuario (PDO)
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="listaTareas.php">
                     Mis Tareas
                 </a>
