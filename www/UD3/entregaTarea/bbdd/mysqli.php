@@ -47,7 +47,7 @@ function crearTablaUsuarios(){
     try {
         $conexion = conectaTareas();
 
-        if ($conexion->$connect_error){
+        if ($conexion->connect_error){
             return [false, $conexion->error];
         } else {
             $sqlCheck = "SHOW TABLES LIKE 'usuarios'";
@@ -61,8 +61,8 @@ function crearTablaUsuarios(){
                 `id` INT NOT NULL AUTO_INCREMENT,
                 `username` VARCHAR(50) NOT NULL,
                 `nombre` VARCHAR(50) NOT NULL,
-                `apellidos VARCHAR(100) NOT NULL,
-                `contrasena` VARCHAR(100) NOT NULL,
+                `apellidos` VARCHAR(100) NOT NULL,
+                `contrasena` VARCHAR(100) NOT NULL, 
                 PRIMARY KEY (`id`)
                 )';
             if ($conexion->query($sql)){
@@ -82,7 +82,7 @@ function crearTablaTareas(){
     try {
         $conexion = conectaTareas();
 
-        if ($conexion->$connect_error){
+        if ($conexion->connect_error){
             return [false, $conexion->error];
         } else {
             $sqlCheck = "SHOW TABLES LIKE 'tareas'";
@@ -96,9 +96,9 @@ function crearTablaTareas(){
                 `id` INT NOT NULL AUTO_INCREMENT,
                 `titulo` VARCHAR(50) NOT NULL,
                 `descripcion` VARCHAR(250) NOT NULL,
-                `estado VARCHAR(50) NOT NULL,
-                `id_usuario` INT NOT NULL,
-                PRIMARY KEY (`id`),
+                `estado` VARCHAR(50) NOT NULL,
+                `id_usuario` INT NOT NULL, 
+                PRIMARY KEY (`id`), 
                 FOREIGN KEY (`id_usuario`) REFERENCES `usuarios`(`id`)
                 )';
             if ($conexion->query($sql)){

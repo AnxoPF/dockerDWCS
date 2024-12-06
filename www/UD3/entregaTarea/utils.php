@@ -41,7 +41,21 @@ function filtrarContenido($contenido) {
 
 // Función para comprobar si un campo contiene información de texto válida
 function esTextoValido($texto) {
-    return !empty(filtrarContenido($texto));
+    return (!empty(filtrarContenido($texto) && validarLargoCampo($texto, 2)));
+}
+
+function validarLargoCampo($texto, $longitud){
+    return (strlen(trim($texto)) > $longitud);
+}
+
+function esNumeroValido($campo)
+{
+    return (!empty(filtraCampo($campo) && is_numeric($campo)));
+}
+
+function validaContrasena($campo)
+{
+    return (!empty($campo) && validarLargoCampo($campo, 7));
 }
 
 // Función para guardar una tarea de forma simulada

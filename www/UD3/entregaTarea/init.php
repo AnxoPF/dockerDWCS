@@ -25,7 +25,7 @@
                         }
                         echo $resultado[1];
                         echo '</div>';
-                        $resultado = createTablaUsuarios();
+                        $resultado = crearTablaUsuarios();
                         if ($resultado[0]){
                             echo '<div class="alert alert-success" role="alert">';
                         } else {
@@ -33,7 +33,7 @@
                         }
                         echo $resultado[1];
                         echo '</div>';
-                        $resultado = createTablaTareas();
+                        $resultado = crearTablaTareas();
                         if ($resultado[0]){
                             echo '<div class="alert alert-success" role="alert">';
                         } else {

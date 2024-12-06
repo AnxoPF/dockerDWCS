@@ -2,32 +2,32 @@
     <div class="position-sticky">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="index.php">
+                <a class="nav-link" href="/UD3/entregaTarea/index.php">
                     Home
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="init.php">
+                <a class="nav-link" href="/UD3/entregaTarea/init.php">
                     Inicializar
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="usuarios/usuarios.php">
+                <a class="nav-link" href="/UD3/entregaTarea/usuarios/usuarios.php">
                     Lista de usuarios (PDO)
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="usuarios/nuevoUsuarioForm.php">
+                <a class="nav-link" href="/UD3/entregaTarea/usuarios/nuevoUsuarioForm.php">
                     Nuevo usuario (PDO)
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="listaTareas.php">
+                <a class="nav-link" href="/UD3/entregaTarea/listaTareas.php">
                     Mis Tareas
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="nuevaForm.php">
+                <a class="nav-link" href="/UD3/entregaTarea/nuevaForm.php">
                     Nueva Tarea
                 </a>
             </li>

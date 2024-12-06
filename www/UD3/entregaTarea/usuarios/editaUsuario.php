@@ -11,12 +11,13 @@
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h2>Nuevo Usuario</h2>
+                    <h2>Actualizar usuario</h2>
                 </div>
 
-                <div class="container">
-                    <?php
+                <div class="container justify-content-between">
+                <?php
                         require_once('../utils.php');
+                        $id = $_POST['id'];
                         $nombre = $_POST['nombre'];
                         $apellidos = $_POST['apellidos'];
                         $username = $_POST['username'];
@@ -35,13 +36,14 @@
                             $error = true;
                             echo '<div class="alert alert-danger" role="alert">El campo username es obligatorio y debe contener al menos 3 caracteres.</div>';
                         }
-                        if (!validaContrasena($contrasena)) {
+                        if (!empty($contrasena) && !validaContrasena($contrasena)) {
                             $error = true;
                             echo '<div class="alert alert-danger" role="alert">El campo contraseña es obligatorio y debe ser compleja.</div>';
                         }
                         if (!$error) {
                             require_once('../bbdd/pdo.php');
-                            $resultado = nuevoUsuario(filtrarContenido($nombre), filtrarContenido($apellidos), filtrarContenido($username), $contrasena);
+                            if (empty($contrasena)) $contrasena = null;
+                            $resultado = actualizarUsuario($id, filtrarContenido($nombre), filtrarContenido($apellidos), filtrarContenido($username), $contrasena);
                             if ($resultado[0]) {
                                 echo '<div class="alert alert-success" role="alert">Usuario guardado correctamente.</div>';
                             } else {
