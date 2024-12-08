@@ -113,3 +113,127 @@ function crearTablaTareas(){
         cerrarConexion($conexion);
     }
 }
+
+function buscaUsuarioMysqli($id)
+{
+    $conexion = conectaTareas();
+
+    if ($conexion->connect_error)
+    {
+        return [false, $conexion->error];
+    }
+    else
+    {
+        $sql = "SELECT * FROM usuarios WHERE id = " . $id;
+        $resultados = $conexion->query($sql);
+        if ($resultados->num_rows == 1)
+        {
+            return $resultados->fetch_assoc();
+        }
+        else
+        {
+            return null;
+        }
+    }
+}
+
+function listaTareas() {
+    try {
+        $conexion = conectaTareas();
+
+        if ($conexion->connect_error) {
+            return [false, $conexion->error];
+        } else {
+            $sql = "SELECT * FROM tareas";
+            $resultados = $conexion->query($sql);
+            $tareas = array();
+            while ($row = $resultados->fetch_assoc()) {
+                $usuario = buscaUsuarioMysqli($row['id_usuario']);
+                $row['id_usuario'] = $usuario['username'];
+                array_push($tareas, $row);
+            }
+            return [true, $tareas];
+        }
+    } catch (mysqli_sql_exception $e) {
+        return [false, $e->getMessage()];
+    } finally {
+        cerrarConexion($conexion);
+    }
+}
+
+function nuevaTarea($titulo, $descripcion, $estado, $usuario) {
+    try {
+        $conexion = conectaTareas();
+
+        if ($conexion->connect_error) {
+            return [false, $conexion->error];
+        } else {
+            $stmt = $conexion->prepare("INSERT INTO tareas (titulo, descripcion, estado, id_usuario) VALUES (?,?,?,?)");
+            $stmt->bind_param("ssss", $titulo, $descripcion, $estado, $usuario);
+            $stmt->execute();
+
+            return [true, 'Tarea creada correctamente.'];
+        }
+    } catch (mysqli_sql_exception $e) {
+        return [false, $e->getMessage()];
+    } finally {
+        cerrarConexion($conexion);
+    }
+}
+
+function buscaTarea($id) {
+    $conexion = conectaTareas();
+
+    if ($conexion->connect_error) {
+        return [false, $conexion->error];
+    } else {
+        $sql = "SELECT * FROM tareas WHERE id = " . $id;
+        $resultados = $conexion->query($sql);
+        if ($resultados->num_rows == 1) {
+            return $resultados->fetch_assoc();
+        } else {
+            return null;
+        }
+    }
+}
+
+function actualizatarea($id, $titulo, $descripcion, $estado, $usuario) {
+    try {
+        $conexion = conectaTareas();
+
+        if ($conexion->connect_error) {
+            return [false, $conexion->error];
+        } else {
+            $stmt = $conexion->prepare("UPDATE tareas SET titulo = ?, descripcion = ?, estado = ?, id_usuario = ? WHERE id = ?");
+            $stmt->bind_param("sssii", $titulo, $descripcion, $estado, $usuario, $id);
+            $stmt->execute();
+
+            return [true, 'Tarea actualizada correctamente.'];
+        }
+    } catch (mysqli_sql_exception $e) {
+        return [false, $e->getMessage()];
+    } finally {
+        cerrarConexion($conexion);
+    }
+}
+
+function borraTarea($id) {
+    try {
+        $conexion = conectaTareas();
+
+        if ($conexion->connect_error) {
+            return [false, $conexion->error];
+        } else {
+            $sql = "DELETE FROM tareas WHERE id = " . $id;
+            if ($conexion->query($sql)) {
+                return [true, 'Tarea borrada correctamente.'];
+            } else {
+                return [false, 'No se ha podido borrar la tarea.'];
+            }
+        }
+    } catch (mysqli_sql_exception $e) {
+        return [false, $e->getMessage()];
+    } finally {
+        cerrarConexion($conexion);
+    }
+}

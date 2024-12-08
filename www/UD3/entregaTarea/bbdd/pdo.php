@@ -115,3 +115,28 @@ function borrarUsuario($id) {
         $con = null;
     }
 }
+
+function listaTareasPDO($id_usuario, $estado){
+    try {
+        $con = conectaPDO();
+        $sql = 'SELECT * FROM tareas WHERE id_usuario = ' . $id_usuario;
+        if (isset($estado)) {
+            $sql = $sql . " AND estado = '" . $estado . "'";
+        }
+        $stmt = $con->prepare($sql);
+        $stmt->execute();
+
+        $stmt->fetchMode(PDO::FETCH_ASSOC);
+        $tareas = array();
+        while ($row = $stmt->fetch()) {
+            $usuario = buscarUsuario($row['id_usuario']);
+            $row['id_usuario'] = $usuario['username'];
+            array_push($tareas, $row);
+        }
+        return [true, $tareas];
+    } catch (PDOException $e) {
+        return [false, $e->getMessage()];
+    } finally {
+        $con = null;
+    }
+}

@@ -22,12 +22,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/UD3/entregaTarea/listaTareas.php">
-                    Mis Tareas
+                <a class="nav-link" href="/UD3/entregaTarea/tareas/tareas.php">
+                    Lista de tareas
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/UD3/entregaTarea/nuevaForm.php">
+                <a class="nav-link" href="/UD3/entregaTarea/tareas/nuevaForm.php">
                     Nueva Tarea
                 </a>
             </li>
