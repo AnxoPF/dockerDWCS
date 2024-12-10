@@ -42,7 +42,8 @@
                                             echo '<td>' . $usuario['username'] . '</td>';
                                             echo '<td>';
                                             echo '<a class="btn btn-sm btn-outline-success" href="editaUsuarioForm.php?id=' . $usuario['id'] . '" role ="button">Editar</a>';
-                                            echo '<a class="btn btn-sm btn-outline-danger ms-2" href="borraUsuario.php?id=' . $usuario['id'] . '" role ="button">Borrar</a>';                                    
+                                            echo '<a class="btn btn-sm btn-outline-danger ms-2" href="borraUsuario.php?id=' . $usuario['id'] . '" role ="button">Borrar</a>';
+                                            echo '<a class="btn btn-sm btn-outline-warning ms-2" href="../tareas/nuevaForm.php?id=' . $usuario['id'] . '" role ="button">Nueva Tarea</a>';                                    
                                         }
                                     } else {
                                         echo '<tr><td colspan="100">No hay usuarios</td></tr>';
