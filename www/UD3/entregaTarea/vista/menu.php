@@ -31,6 +31,11 @@
                     Nueva Tarea
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/UD3/entregaTarea/tareas/buscaTareas.php">
+                    Buscador de Tareas
+                </a>
+            </li>
         </ul>
     </div>
 </nav>

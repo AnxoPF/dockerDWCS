@@ -126,7 +126,7 @@ function listaTareasPDO($id_usuario, $estado){
         $stmt = $con->prepare($sql);
         $stmt->execute();
 
-        $stmt->fetchMode(PDO::FETCH_ASSOC);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $tareas = array();
         while ($row = $stmt->fetch()) {
             $usuario = buscarUsuario($row['id_usuario']);
