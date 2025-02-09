@@ -21,6 +21,8 @@ services:
             - "80:80"
         volumes:
             - ./www:/var/www/html
+        env_file:
+            - .env
         links:
             - db
         networks:
