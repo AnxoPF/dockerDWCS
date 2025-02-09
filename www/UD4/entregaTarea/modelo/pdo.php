@@ -1,20 +1,14 @@
 <?php
 
 function conectarPDO() {
-    $host = getenv('DB_HOST') ?: 'db';
-    $db = getenv('DB_NAME') ?: 'tareas';
-    $user = getenv('DB_USER') ?: 'root';
-    $pass = getenv('DB_PASS') ?: 'test';
-    $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+    $servername = $_ENV['DB_HOST'];
+    $username = $_ENV['DB_USER'];
+    $password = $_ENV['DB_PASS'];
+    $dbname = $_ENV['DB_NAME'];
 
-    try {
-        return new PDO($dsn, $user, $pass, [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-        ]);
-    } catch (PDOException $e) {
-        die("Error de conexión: " . $e->getMessage());
-    }
+    $conPDO = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conPDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $conPDO;
 }
 
 function listaUsuarios() {

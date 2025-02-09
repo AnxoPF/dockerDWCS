@@ -1,24 +1,8 @@
 <?php
 session_start();
-require_once('modelo/pdo.php');
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $contrasena = $_POST['contrasena'];
-
-    $con = conectarPDO();
-    $stmt = $con->prepare("SELECT * FROM usuarios WHERE username = :username");
-    $stmt->bindParam(':username', $username);
-    $stmt->execute();
-    $usuario = $stmt->fetch();
-
-    if ($usuario && $contrasena === $usuario['contrasena']) {
-        $_SESSION['usuario'] = $usuario;
-        header('Location: dashboard.php');
-        exit();
-    } else {
-        $error = "Usuario o contraseña incorrectos.";
-    }
+if (isset($_SESSION['admin'])) {	
+    header("Location: index.php");
+    exit();
 }
 ?>
 
@@ -38,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php if (isset($error)): ?>
                     <div class="alert alert-danger"><?= $error ?></div>
                 <?php endif; ?>
-                <form method="POST" action="">
+                <form method="POST" action="loginAuth.php">
                     <div class="mb-3">
                         <label for="username" class="form-label">Usuario</label>
                         <input type="text" class="form-control" id="username" name="username" required>
