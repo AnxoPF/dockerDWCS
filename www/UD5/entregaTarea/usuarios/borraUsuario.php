@@ -9,10 +9,10 @@ require_once('../modelo/pdo.php');
 
 if (!empty($_GET))
 {
-    $id = $_GET['id'];
-    if (!empty($id))
+    $usuario = buscaUsuario($_GET['id']);
+    if ($usuario)
     {
-        $resultado = borraUsuario($id);
+        $resultado = borraUsuario($usuario);
         if ($resultado[0])
         {
             $message = 'Usuario borrado correctamente.';

@@ -43,7 +43,9 @@ if (!esNumeroValido($id_usuario))
 
 if (!$error)
 {
-    $resultado = nuevaTarea(filtraCampo($titulo), filtraCampo($descripcion), filtraCampo($estado), filtraCampo($id_usuario));
+    $usuario = buscaUsuarioMysqli($id_usuario);
+    $tarea = new Tarea(0, filtraCampo($titulo), filtraCampo($descripcion), filtraCampo($estado), $usuario);
+    $resultado = nuevaTarea($tarea);
     if ($resultado[0])
     {
         $response = 'success';

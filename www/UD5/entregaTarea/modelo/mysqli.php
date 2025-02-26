@@ -1,5 +1,10 @@
 <?php
 
+require_once(__DIR__ . '/entity/Fichero.php');
+require_once(__DIR__ . '/entity/Usuario.php');
+require_once(__DIR__ . '/entity/Tarea.php');
+
+
 function conecta($host, $user, $pass, $db)
 {
     $conexion = new mysqli($host, $user, $pass, $db);
@@ -204,8 +209,18 @@ function listaTareas()
             while ($row = $resultados->fetch_assoc())
             {
                 $usuario = buscaUsuarioMysqli($row['id_usuario']);
-                $row['id_usuario'] = $usuario['username'];
-                array_push($tareas, $row);
+
+                if ($usuario) {
+                    $tarea = new Tarea(
+                        $row['id'],
+                        $row['titulo'],
+                        $row['descripcion'],
+                        $row['estado'],
+                        $usuario
+                    );
+
+                    array_push($tareas, $tarea);
+                }
             }
             return [true, $tareas];
         }
@@ -220,7 +235,7 @@ function listaTareas()
     }
 }
 
-function nuevaTarea($titulo, $descripcion, $estado, $usuario)
+function nuevaTarea($tarea)
 {
     try {
         $conexion = conectaTareas();
@@ -232,6 +247,12 @@ function nuevaTarea($titulo, $descripcion, $estado, $usuario)
         else
         {
             $stmt = $conexion->prepare("INSERT INTO tareas (titulo, descripcion, estado, id_usuario) VALUES (?,?,?,?)");
+
+            $titulo = $tarea->getTitulo();
+            $descripcion = $tarea->getDescripcion();
+            $estado = $tarea->getEstado();
+            $usuario = $tarea->getIdUsuario();
+
             $stmt->bind_param("ssss", $titulo, $descripcion, $estado, $usuario);
 
             $stmt->execute();
@@ -249,7 +270,7 @@ function nuevaTarea($titulo, $descripcion, $estado, $usuario)
     }
 }
 
-function actualizaTarea($id, $titulo, $descripcion, $estado, $usuario)
+function actualizaTarea($tarea)
 {
     try {
         $conexion = conectaTareas();
@@ -262,6 +283,13 @@ function actualizaTarea($id, $titulo, $descripcion, $estado, $usuario)
         {
             $sql = "UPDATE tareas SET titulo = ?, descripcion = ?, estado = ?, id_usuario = ? WHERE id = ?";
             $stmt = $conexion->prepare($sql);
+
+            $titulo = $tarea->getTitulo();
+            $descripcion = $tarea->getDescripcion();
+            $estado = $tarea->getEstado();
+            $usuario = $tarea->getIdUsuario();
+            $id = $tarea->getId();
+
             $stmt->bind_param("sssii", $titulo, $descripcion, $estado, $usuario, $id);
 
             $stmt->execute();
@@ -326,7 +354,18 @@ function buscaTarea($id)
         $resultados = $conexion->query($sql);
         if ($resultados->num_rows == 1)
         {
-            return $resultados->fetch_assoc();
+            $row = $resultados->fetch_assoc();
+            $usuario = buscaUsuarioMysqli($row['id_usuario']);
+
+            if($usuario) {
+                return new Tarea(
+                    $row['id'],
+                    $row['titulo'],
+                    $row['descripcion'],
+                    $row['estado'],
+                    $usuario
+                );
+            }
         }
         else
         {
@@ -340,7 +379,7 @@ function esPropietarioTarea($idUsuario, $idTarea)
     $tarea = buscaTarea($idTarea);
     if ($tarea)
     {
-        return $tarea['id_usuario'] == $idUsuario;
+        return $tarea->getUsuario()->getId() == $idUsuario;
     }
     else
     {
@@ -362,7 +401,16 @@ function buscaUsuarioMysqli($id)
         $resultados = $conexion->query($sql);
         if ($resultados->num_rows == 1)
         {
-            return $resultados->fetch_assoc();
+            $row = $resultados->fetch_assoc();
+
+            return new Usuario(
+                $row['id'],
+                $row['nombre'],
+                $row['apellidos'],
+                $row['username'],
+                $row['contrasena'],
+                $row['rol']
+            );
         }
         else
         {

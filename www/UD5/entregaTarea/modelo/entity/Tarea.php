@@ -5,14 +5,14 @@ class Tarea {
     private string $titulo;
     private string $descripcion;
     private string $estado;
-    private int $id_usuario;
+    private Usuario $usuario;
 
-    public function __construct(int $id, string $titulo, string $descripcion, string $estado, int $id_usuario) {
+    public function __construct(int $id, string $titulo, string $descripcion, string $estado, Usuario $usuario) {
         $this->id = $id;
         $this->titulo = $titulo;
         $this->descripcion = $descripcion;
         $this->estado = $estado;
-        $this->id_usuario = $id_usuario;
+        $this->usuario = $usuario;
     }
 
     public function getId(): int {
@@ -43,11 +43,15 @@ class Tarea {
         $this->estado = $estado;
     }
 
-    public function getIdUsuario(): int {
-        return $this->id_usuario;
+    public function getUsuario(): Usuario {
+        return $this->usuario;
     }
 
-    public function setIdUsuario(int $id_usuario): void {
-        $this->id_usuario = $id_usuario;
+    public function setUsuario(Usuario $usuario): void {
+        $this->usuario = $usuario;
+    }
+
+    public function getIdUsuario(): int {
+        return $this->getUsuario()->getId();
     }
 }

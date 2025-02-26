@@ -42,13 +42,13 @@
                         if (checkAdmin() || esPropietarioTarea($_SESSION['usuario']['id'], $id))
                         {
                             $tarea = buscaTarea($id);
-                            $usuario = buscaUsuarioMysqli($tarea['id_usuario']);
+                            $usuario = buscaUsuarioMysqli($tarea->getIdUsuario());
                             if ($tarea)
                             {
-                                $titulo = $tarea['titulo'];
-                                $descripcion = $tarea['descripcion'];
-                                $estado = $tarea['estado'];
-                                $id_usuario = $tarea['id_usuario'];
+                                $titulo = $tarea->getTitulo();
+                                $descripcion = $tarea->getDescripcion();
+                                $estado = $tarea->getEstado();
+                                $id_usuario = $tarea->getIdUsuario();
 
                                 require_once('../modelo/pdo.php');
                                 $ficheros = listaFicheros($id);
@@ -66,7 +66,7 @@
                                                 <strong>Titulo:</strong>
                                             </div>
                                             <div class="col-md-9">
-                                                <p class="mb-0"><?php echo $tarea['titulo']; ?></p>
+                                                <p class="mb-0"><?php echo $tarea->getTitulo(); ?></p>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -74,7 +74,7 @@
                                                 <strong>Descripción:</strong>
                                             </div>
                                             <div class="col-md-9">
-                                                <p class="mb-0"><?php echo $tarea['descripcion']; ?></p>
+                                                <p class="mb-0"><?php echo $tarea->getDescripcion(); ?></p>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -82,7 +82,7 @@
                                                 <strong>Estado:</strong>
                                             </div>
                                             <div class="col-md-9">
-                                                <p class="mb-0"><?php echo $tarea['estado']; ?></p>
+                                                <p class="mb-0"><?php echo $tarea->getEstado(); ?></p>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -90,7 +90,7 @@
                                                 <strong>Usuario:</strong>
                                             </div>
                                             <div class="col-md-9">
-                                                <p class="mb-0"><?php echo $usuario['username']; ?></p>
+                                                <p class="mb-0"><?php echo $usuario->getUsername(); ?></p>
                                             </div>
                                         </div>
                                     </div>

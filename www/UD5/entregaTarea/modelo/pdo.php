@@ -2,6 +2,7 @@
 
 require_once(__DIR__ . '/entity/Fichero.php');
 require_once(__DIR__ . '/entity/Usuario.php');
+require_once(__DIR__ . '/entity/Tarea.php');
 
 
 function conectaPDO()
@@ -55,8 +56,8 @@ function listaTareasPDO($id_usuario, $estado)
         while ($row = $stmt->fetch())
         {
             $usuario = buscaUsuario($row['id_usuario']);
-            $row['id_usuario'] = $usuario->getUsername();
-            array_push($tareas, $row);
+            $tarea = new Tarea($row['id'], $row['titulo'], $row['descripcion'], $row['estado'], $usuario);
+            array_push($tareas, $tarea);
         }
         return [true, $tareas];
     }
@@ -96,9 +97,9 @@ function actualizaUsuario($usuario)
 {
     try{
         $con = conectaPDO();
-        $sql = "UPDATE usuarios SET nombre = ?, apellidos = ?, username = ?, rol = ?";
+        $sql = "UPDATE usuarios SET username = ?, nombre = ?, apellidos = ?, rol = ?";
 
-        $params = [$usuario->getNombre(), $usuario->getApellidos(), $usuario->getUsername(), $usuario->getRol()];
+        $params = [$usuario->getUsername(), $usuario->getNombre(), $usuario->getApellidos(), $usuario->getRol()];
         
         if ($usuario->getContrasena() !== "x")
         {
@@ -123,16 +124,16 @@ function actualizaUsuario($usuario)
     }
 }
 
-function borraUsuario($id)
+function borraUsuario($usuario)
 {
     try {
         $con = conectaPDO();
 
         $con->beginTransaction();
 
-        $stmt = $con->prepare('DELETE FROM tareas WHERE id_usuario = ' . $id);
+        $stmt = $con->prepare('DELETE FROM tareas WHERE id_usuario = ' . $usuario->getId());
         $stmt->execute();
-        $stmt = $con->prepare('DELETE FROM usuarios WHERE id = ' . $id);
+        $stmt = $con->prepare('DELETE FROM usuarios WHERE id = ' . $usuario->getId());
         $stmt->execute();
         
         return [$con->commit(), ''];
@@ -163,9 +164,9 @@ function buscaUsuario($id)
         {
             return new Usuario(
             $resultado['id'],
-            $resultado['username'],
             $resultado['nombre'],
             $resultado['apellidos'],
+            $resultado['username'],
             $resultado['contrasena'],
             $resultado['rol']);
         }
@@ -174,7 +175,7 @@ function buscaUsuario($id)
             return null;
         }
     }
-    catch (PDOExcetion $e)
+    catch (PDOException $e)
     {
         return null;
     }
