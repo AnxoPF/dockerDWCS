@@ -40,7 +40,7 @@ if (!$error && !empty($contrasena) && !validaContrasena($contrasena))
 if (!$error)
 {
     require_once('../modelo/pdo.php');
-    if (empty($contrasena)) $contrasena = null;
+    if (empty($contrasena)) $contrasena = "x";
     $usuario = new Usuario($id, filtraCampo($nombre), filtraCampo($apellidos), filtraCampo($username), $contrasena, $rol);
     $resultado = actualizaUsuario($usuario);
     if ($resultado[0])

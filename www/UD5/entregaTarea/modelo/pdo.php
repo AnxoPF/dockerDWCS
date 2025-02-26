@@ -55,7 +55,7 @@ function listaTareasPDO($id_usuario, $estado)
         while ($row = $stmt->fetch())
         {
             $usuario = buscaUsuario($row['id_usuario']);
-            $row['id_usuario'] = $usuario['username'];
+            $row['id_usuario'] = $usuario->getUsername();
             array_push($tareas, $row);
         }
         return [true, $tareas];
@@ -100,7 +100,7 @@ function actualizaUsuario($usuario)
 
         $params = [$usuario->getNombre(), $usuario->getApellidos(), $usuario->getUsername(), $usuario->getRol()];
         
-        if ($usuario->getContrasena() !== null)
+        if ($usuario->getContrasena() !== "x")
         {
             $sql .= ', contrasena = ?';
             $params[] = password_hash($usuario->getContrasena(), PASSWORD_DEFAULT);
@@ -157,9 +157,17 @@ function buscaUsuario($id)
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-        if ($stmt->rowCount() == 1)
+        $resultado = $stmt->fetch();
+
+        if ($resultado)
         {
-            return $stmt->fetch();
+            return new Usuario(
+            $resultado['id'],
+            $resultado['username'],
+            $resultado['nombre'],
+            $resultado['apellidos'],
+            $resultado['contrasena'],
+            $resultado['rol']);
         }
         else
         {
