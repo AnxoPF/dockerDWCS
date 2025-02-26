@@ -1,5 +1,9 @@
 <?php
 
+require_once(__DIR__ . '/entity/Fichero.php');
+require_once(__DIR__ . '/entity/Usuario.php');
+
+
 function conectaPDO()
 {
     $servername = $_ENV['DATABASE_HOST'];
@@ -16,12 +20,14 @@ function listaUsuarios()
 {
     try {
         $con = conectaPDO();
-        $stmt = $con->prepare('SELECT id, username, nombre, apellidos, rol, contrasena FROM usuarios');
+        $stmt = $con->prepare('SELECT id, nombre, apellidos, username, contrasena, rol FROM usuarios');
         $stmt->execute();
 
-        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        $resultados = $stmt->fetchAll();
-        return [true, $resultados];
+        $usuarios = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $usuarios[] = new Usuario($row['id'], $row['nombre'], $row['apellidos'], $row['username'], $row['contrasena'], $row['rol']);
+        }
+        return [true, $usuarios];
     }
     catch (PDOException $e) {
         return [false, $e->getMessage()];
@@ -63,24 +69,20 @@ function listaTareasPDO($id_usuario, $estado)
     
 }
 
-function nuevoUsuario($nombre, $apellidos, $username, $contrasena, $rol=0)
+function nuevoUsuario($usuario)
 {
     try{
         $con = conectaPDO();
-        $stmt = $con->prepare("INSERT INTO usuarios (nombre, apellidos, username, rol, contrasena) VALUES (:nombre, :apellidos, :username, :rol, :contrasena)");
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':apellidos', $apellidos);
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':rol', $rol);
-        $hasheado = password_hash($contrasena, PASSWORD_DEFAULT);
-        $stmt->bindParam(':contrasena', $hasheado);
-        $stmt->execute();
+        $stmt = $con->prepare("INSERT INTO usuarios (nombre, apellidos, username, rol, contrasena) VALUES (?, ?, ?, ?, ?)");
+        $hasheado = password_hash($usuario->getContrasena(), PASSWORD_DEFAULT);
+        
+        $stmt->execute([$usuario->getNombre(), $usuario->getApellidos(), $usuario->getUsername(), $usuario->getRol(), $hasheado]);
         
         $stmt->closeCursor();
 
         return [true, null];
     }
-    catch (PDOExcetion $e)
+    catch (PDOException $e)
     {
         return [false, $e->getMessage()];
     }
@@ -90,35 +92,25 @@ function nuevoUsuario($nombre, $apellidos, $username, $contrasena, $rol=0)
     }
 }
 
-function actualizaUsuario($id, $nombre, $apellidos, $username, $contrasena, $rol)
+function actualizaUsuario($usuario)
 {
     try{
         $con = conectaPDO();
-        $sql = "UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, username = :username, rol = :rol";
+        $sql = "UPDATE usuarios SET nombre = ?, apellidos = ?, username = ?, rol = ?";
 
-        if (isset($contrasena))
-        {
-            $sql = $sql . ', contrasena = :contrasena';
-        }
-
-        $sql = $sql . ' WHERE id = :id';
-
-        $stmt = $con->prepare($sql);
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':apellidos', $apellidos);
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':rol', $rol);
-        if (isset($contrasena))
-        {
-            $hasheado = password_hash($contrasena, PASSWORD_DEFAULT);
-            $stmt->bindParam(':contrasena', $hasheado);
-        }
-        $stmt->bindParam(':id', $id);
-
-        $stmt->execute();
+        $params = [$usuario->getNombre(), $usuario->getApellidos(), $usuario->getUsername(), $usuario->getRol()];
         
-        $stmt->closeCursor();
+        if ($usuario->getContrasena() !== null)
+        {
+            $sql .= ', contrasena = ?';
+            $params[] = password_hash($usuario->getContrasena(), PASSWORD_DEFAULT);
+        }
 
+        $sql .= ' WHERE id = ?';
+        $params[] = $usuario->getId();
+
+        $con->prepare($sql)->execute($params);
+        
         return [true, null];
     }
     catch (PDOExcetion $e)
@@ -227,12 +219,8 @@ function listaFicheros($id_tarea)
         $ficheros = array();
         while ($row = $stmt->fetch())
         {
-            $fichero = new Fichero();
-            $fichero->id=$row['id'];
-            $fichero->nombre=$row['nombre'];
-            $fichero->descripcion=$row['descripcion'];
-            $fichero->file=$row['file'];
-            array_push($ficheros, $row);
+            $fichero = new Fichero($row['id'], $row['nombre'], $row['file'], $row['descripcion'], $row['id_tarea']);
+            array_push($ficheros, $fichero);
         }
         return $ficheros;
     }

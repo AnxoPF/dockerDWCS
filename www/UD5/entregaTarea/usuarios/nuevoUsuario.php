@@ -39,7 +39,7 @@ if (!$error && !validaContrasena($contrasena))
 if (!$error)
 {
     require_once('../modelo/pdo.php');
-    $resultado = nuevoUsuario(filtraCampo($nombre), filtraCampo($apellidos), filtraCampo($username), $contrasena, $rol);
+    $resultado = nuevoUsuario(new Usuario(0, filtraCampo($nombre), filtraCampo($apellidos), filtraCampo($username), $contrasena, $rol));
     if ($resultado[0])
     {
         $message = 'Usuario guardado correctamente.';
