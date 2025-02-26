@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="archivo" class="form-label">Seleccionar archivo</label>
-                                    <input class="form-control" type="file" id="archivo" name="archivo" required>
+                                    <input class="form-control" type="file" id="file" name="file" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Subir archivo</button>  
                     <?php

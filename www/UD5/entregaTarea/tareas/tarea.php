@@ -114,7 +114,7 @@
                                                             <h5 class="card-title"><i class="<?= getFileIcon($fichero->getFile()); ?> me-3 fs-4"></i><?php echo $fichero->getNombre(); ?> </h5>
                                                             <p class="card-text text-muted text-truncate"><?php echo $fichero->getDescripcion(); ?></p>
                                                             <div class="d-flex gap-2">
-                                                                <a href="../<?php echo $fichero->getFile(); ?>" class="btn btn-sm btn-outline-primary" download>Descargar</a>
+                                                                <a href="../files/<?php echo $fichero->getFile(); ?>" class="btn btn-sm btn-outline-primary" download>Descargar</a>
                                                                 <a href="../ficheros/borrar.php?id=<?php echo $fichero->getId(); ?>" class="btn btn-sm btn-outline-danger">Eliminar</a>
                                                             </div>
                                                         </div>

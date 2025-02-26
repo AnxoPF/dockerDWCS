@@ -228,7 +228,8 @@ function listaFicheros($id_tarea)
         $ficheros = array();
         while ($row = $stmt->fetch())
         {
-            $fichero = new Fichero($row['id'], $row['nombre'], $row['file'], $row['descripcion'], $row['id_tarea']);
+            $tarea = buscaTareaPDO($row['id_tarea']);
+            $fichero = new Fichero($row['id'], $row['nombre'], $row['file'], $row['descripcion'], $tarea);
             array_push($ficheros, $fichero);
         }
         return $ficheros;
@@ -256,7 +257,15 @@ function buscaFichero($id)
         $fichero = null;
         if ($row = $stmt->fetch())
         {
-            $fichero = $row;
+            $tarea = buscaTareaPDO($row['id_tarea']);
+
+            $fichero = new Fichero(
+                $row['id'],
+                $row['nombre'],
+                $row['file'],
+                $row['descripcion'],
+                $tarea
+            );
         }
         return $fichero;
     }
@@ -291,17 +300,26 @@ function borraFichero($id)
     }
 }
 
-function nuevoFichero($file, $nombre, $descripcion, $idTarea)
+function nuevoFichero($fichero)
 {
     try
     {
         $con = conectaPDO();
         $stmt = $con->prepare("INSERT INTO ficheros (nombre, file, descripcion, id_tarea) VALUES (:nombre, :file, :descripcion, :idTarea)");
+        
+        $file = $fichero->getFile();
+        $nombre = $fichero->getNombre();
+        $descripcion = $fichero->getDescripcion();
+        $id_tarea = $fichero->getIdTarea();
+        
+        
         $stmt->bindParam(':file', $file);
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':descripcion', $descripcion);
-        $stmt->bindParam(':idTarea', $idTarea);
+        $stmt->bindParam(':idTarea', $id_tarea);
         $stmt->execute();
+        
+        $fichero->setId($con->lastInsertId());
         
         $stmt->closeCursor();
 
@@ -315,4 +333,43 @@ function nuevoFichero($file, $nombre, $descripcion, $idTarea)
     {
         $con = null;
     }
+}
+
+function buscaTareaPDO($id)
+{
+
+    try
+    {
+        $con = conectaPDO();
+        $stmt = $con->prepare('SELECT * FROM tareas WHERE id = ' . $id);
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+        $resultado = $stmt->fetch();
+        $usuario = buscaUsuario($resultado['id_usuario']);
+
+        if ($resultado)
+        {
+            return new Tarea(
+                $resultado['id'],
+                $resultado['titulo'],
+                $resultado['descripcion'],
+                $resultado['estado'],
+                $usuario
+            );
+        }
+        else
+        {
+            return null;
+        }
+    }
+    catch (PDOException $e)
+    {
+        return null;
+    }
+    finally
+    {
+        $con = null;
+    }
+    
 }
