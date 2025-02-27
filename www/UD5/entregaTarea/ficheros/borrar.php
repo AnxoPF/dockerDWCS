@@ -2,6 +2,8 @@
 require_once('../login/sesiones.php');
 require_once('../modelo/mysqli.php');
 require_once('../modelo/pdo.php');
+require_once('../modelo/entity/FicherosDBImp.php');
+$ficherosDB = new FicherosDBImp();
 
 $status = 'error';
 $messages = array();
@@ -10,7 +12,7 @@ $id_tarea = 0;
 if (!empty($_GET))
 {
     $id = $_GET['id'];
-    $archivo = buscaFichero($id);
+    $archivo = $ficherosDB->buscaFichero($id);
     if (!empty($id) && $archivo)
     {
         $id_tarea = $archivo->getIdTarea();
@@ -19,7 +21,7 @@ if (!empty($_GET))
             $ruta = '../files/' . $archivo->getFile();
 
             $borrado = borrarArchivo($ruta);
-            if ($borrado) $borrado = borraFichero($archivo->getId());
+            if ($borrado) $borrado = $ficherosDB->borraFichero($archivo->getId());
 
             if ($borrado)
             {

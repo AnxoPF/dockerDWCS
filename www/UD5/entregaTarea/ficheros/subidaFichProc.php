@@ -3,6 +3,8 @@
 require_once('../login/sesiones.php');
 require_once('../modelo/mysqli.php');
 require_once('../modelo/pdo.php');
+require_once('../modelo/entity/FicherosDBImp.php');
+$ficherosDB = new FicherosDBImp();
 
 $location = '../tareas.php';
 $response = 'error';
@@ -39,9 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                 $messages[] = "No hay permisos de escritura en la carpeta destino.";
             } else if (move_uploaded_file($archivo['tmp_name'], $rutaDestino)) {
                 $fichero = new Fichero(0, $nombreArchivo, $nombreFinal, $descripcion, $tarea);
-                $resultado = nuevoFichero($fichero);
+                $resultado = $ficherosDB->nuevoFichero($fichero);
 
-                if ($resultado[0])
+                if ($resultado)
                 {
                 $response = 'success';
                 $messages[] = 'Archivo subido correctamente.';
@@ -49,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                 }
                 else
                 {
-                    $messages[] = 'Ocurrió un error guardando el fichero: ' . $resultado[1] . '.';
+                    $messages[] = 'Ocurrió un error guardando el fichero.';
                 }
             }
             else

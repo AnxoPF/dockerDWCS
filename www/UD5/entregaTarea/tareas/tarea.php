@@ -50,8 +50,9 @@
                                 $estado = $tarea->getEstado();
                                 $id_usuario = $tarea->getIdUsuario();
 
-                                require_once('../modelo/pdo.php');
-                                $ficheros = listaFicheros($id);
+                                require_once('../modelo/entity/FicherosDBImp.php');
+                                $ficherosDB = new FicherosDBImp();
+                                $ficheros = $ficherosDB->listaFicheros($id);
                             ?>
 
                             <div class="container my-4">
