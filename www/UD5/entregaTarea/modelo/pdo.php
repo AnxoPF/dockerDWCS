@@ -3,7 +3,7 @@
 require_once(__DIR__ . '/entity/Fichero.php');
 require_once(__DIR__ . '/entity/Usuario.php');
 require_once(__DIR__ . '/entity/Tarea.php');
-
+require_once(__DIR__ . '/exceptions/DatabaseException.php')
 
 function conectaPDO()
 {
@@ -236,7 +236,7 @@ function listaFicheros($id_tarea)
     }
     catch (PDOException $e)
     {
-        return array();
+        throw new DatabaseException("Error al obtener la lista de ficheros", __METHOD__, $sql, 0, $e);
     }
     finally
     {
@@ -271,7 +271,7 @@ function buscaFichero($id)
     }
     catch (PDOException $e)
     {
-        return null;
+        throw new DatabaseException("Error al buscar el fichero", __METHOD__, $sql, 0, $e);
     }
     finally
     {
@@ -292,7 +292,7 @@ function borraFichero($id)
     }
     catch (PDOException $e)
     {
-        return false;
+        throw new DatabaseException("Error al borrar el fichero", __METHOD__, $sql, 0, $e);
     }
     finally
     {
@@ -327,7 +327,7 @@ function nuevoFichero($fichero)
     }
     catch (PDOExcetion $e)
     {
-        return [false, $e->getMessage()];
+        throw new DatabaseException("Error al insertar el fichero", __METHOD__, $sql, 0, $e);
     }
     finally
     {
