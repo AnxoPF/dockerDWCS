@@ -14,6 +14,8 @@
                     <p><a class="btn btn-info btn-sm" href="init.php" role="button">Inicializar</a></p>    
                     <p><a class="btn btn-info btn-sm" href="nuevoUsuario.php" role="button">Nuevo usuario</a></p>
                     <p><a class="btn btn-info btn-sm" href="listaUsuarios.php" role="button">Lista de usuario</a></p>
+                    <p><a class="btn btn-info btn-sm" href="nuevoProducto.php" role="button">Nuevo Producto</a></p>
+                    <p><a class="btn btn-info btn-sm" href="listaProductos.php" role="button">Lista de Productos</a></p>
                 </div>
             </main>
         </div>

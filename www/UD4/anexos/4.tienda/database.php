@@ -78,10 +78,20 @@ function createTablaProductos(){
                 `descripcion` VARCHAR(100) NOT NULL,
                 `precio` FLOAT NOT NULL,
                 `unidades` INT NOT NULL,
-                `foto` BLOB NOT NULL,
+                `foto` LONGBLOB NOT NULL,
                 PRIMARY KEY (`id`)
-                )';
+            )';
+
+            if ($conexion->query($sql)) {
+                return [true, 'Tabla "productos" creada correctamente.'];
+            } else {
+                return [false, 'No se pudo crear la tabla "productos".'];
+            }
         }
+    } catch (mysqli_sql_exception $e) {
+        return [false, $e->getMessage()];
+    } finally {
+        cerrarConexion($conexion);
     }
 }
 
@@ -159,6 +169,31 @@ function listaUsuarios() {
     }
 }
 
+function listaProductos() {
+    try {
+        $conexion = conectaTienda();
+
+        if ($conexion->connect_error)
+        {
+            return [false, $conexion->error];
+        }
+        else
+        {
+            $sql = "SELECT * FROM productos";
+            $resultados = $conexion->query($sql);
+            return [true, $resultados->fetch_all(MYSQLI_ASSOC)];
+        }
+        
+    }
+    catch (mysqli_sql_exception $e) {
+        return [false, $e->getMessage()];
+    }
+    finally
+    {
+        cerrarConexion($conexion);
+    }
+}
+
 function nuevoUsuario($nombre, $apellidos, $edad, $provincia)
 {
     try {
@@ -176,6 +211,35 @@ function nuevoUsuario($nombre, $apellidos, $edad, $provincia)
             $stmt->execute();
 
             return [true, 'Usuario creado correctamente.'];
+        }
+    }
+    catch (mysqli_sql_exception $e)
+    {
+        return [false, $e->getMessage()];
+    }
+    finally
+    {
+        cerrarConexion($conexion);
+    }
+}
+
+function nuevoProducto($nombre, $descripcion, $precio, $unidades, $foto)
+{
+    try {
+        $conexion = conectaTienda();
+        
+        if ($conexion->connect_error)
+        {
+            return [false, $conexion->error];
+        }
+        else
+        {
+            $stmt = $conexion->prepare("INSERT INTO productos (nombre, descripcion, precio, unidades, foto) VALUES (?,?,?,?,?)");
+            $stmt->bind_param("ssdis", $nombre, $descripcion, $precio, $unidades, $foto);
+
+            $stmt->execute();
+
+            return [true, 'Producto creado correctamente.'];
         }
     }
     catch (mysqli_sql_exception $e)

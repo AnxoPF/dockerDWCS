@@ -22,3 +22,7 @@ function esNumeroValido($campo)
 {
     return (!empty(filtraCampo($campo) && is_numeric($campo)));
 }
+
+function validarFoto($foto) {
+
+}
