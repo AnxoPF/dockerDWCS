@@ -22,9 +22,3 @@ function esNumeroValido($campo)
 {
     return (!empty(filtraCampo($campo) && is_numeric($campo)));
 }
-
-function listaGrupoSanguineo()
-{
-    return ['O-', 'O+', 'A-', 'A+', 'B-', 'B+', 'AB-', 'AB+'];
-}
-
