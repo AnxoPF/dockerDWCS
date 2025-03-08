@@ -1,28 +1,40 @@
 <?php
 session_start();
-if (isset($_SESSION['admin'])) {	
-    header("Location: index.php");
+if (isset($_SESSION['usuario'])) {	
+    header("Location: ../index.php?redirect=true");
     exit();
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <h3 class="text-center mb-4">Iniciar Sesión</h3>
-                <?php if (isset($error)): ?>
-                    <div class="alert alert-danger"><?= $error ?></div>
-                <?php endif; ?>
-                <form method="POST" action="loginAuth.php">
+<?php include_once('../vista/header.php'); ?>
+
+<main class="d-flex justify-content-center align-items-center flex-grow-1 p-4 m-4" style="background-image: url('../portada.webp'); background-size: cover; background-position: center;">
+    <div class="position-absolute top-0 start-0 w-100 h-100 bg-light" style="opacity: 0.6;"></div>
+    <div class="card shadow p-4 w-100" style="max-width:400px">
+            
+        <h2 class="text-center mb-4">Iniciar sesión</h2>
+
+        <?php
+        $redirect = isset($_GET['redirect']) ? true : false;
+        $error = isset($_GET['error']) ? true : false;
+        $message = isset($_GET['message']) ? $_GET['message'] : null;
+        if ($redirect)
+            {
+                echo '<div class="alert alert-danger" role="alert">Debes iniciar sesión para acceder.</div>';
+            }
+            elseif ($error)
+            {
+                if ($message)
+                {
+                    echo '<div class="alert alert-danger" role="alert">Error: ' . $message . '</div>';
+                }
+                else
+                {
+                    echo '<div class="alert alert-danger" role="alert">Usuario y contraseña incorrectos.</div>';
+                }
+            }
+            ?>
+                <form method="POST" action="loginAuth.php" class="needs-validation text-center">
                     <div class="mb-3">
                         <label for="username" class="form-label">Usuario</label>
                         <input type="text" class="form-control" id="username" name="username" required>
@@ -31,7 +43,7 @@ if (isset($_SESSION['admin'])) {
                         <label for="contrasena" class="form-label">Contraseña</label>
                         <input type="password" class="form-control" id="contrasena" name="contrasena" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                    <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
                 </form>
             </div>
         </div>

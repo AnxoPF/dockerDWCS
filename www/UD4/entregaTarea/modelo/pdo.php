@@ -147,6 +147,25 @@ function buscaUsuario($id) {
     }
 }
 
+function buscaUsername($username) {
+    try {
+        $con = conectarPDO();
+        $stmt = $con->prepare('SELECT id, rol, contrasena FROM usuarios WHERE username = "' . $username . '"');
+        $stmt->execute();
+        $stmt->setFetchMode(POD::FETCH_ASSOC);
+
+        if ($stmt->rowCount() == 1) {
+            return $stmt->fetch();
+        } else {
+            return null;
+        }
+    } catch (PODException $e) {
+        return null;
+    } finally {
+        $con = null;
+    }
+}
+
 function crearTablaUsuarios(PDO $pdo) {
     $sql = "CREATE TABLE IF NOT EXISTS usuarios (
                 id INT AUTO_INCREMENT PRIMARY KEY,

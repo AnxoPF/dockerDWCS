@@ -1,18 +1,50 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="dashboard.php">Gestor de Tareas</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="dashboard.php">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="logout.php">Cerrar Sesión</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<?php
+session_start();
+
+$raiz = $_ENV['RAIZ_UD4'];
+
+if (!checkSession()) {	
+    redirectLogin();
+}
+
+function checkSession()
+{
+    return isset($_SESSION['usuario']);
+}
+
+function redirectLogin()
+{
+    global $raiz;
+    header("Location: $raiz/login/login.php?redirect=true");
+    exit();
+}
+
+function checkAdmin()
+{
+    global $raiz;
+    return (checkSession() && $_SESSION['usuario']['rol'] == 1);
+}
+
+function redirectIndex()
+{
+    global $raiz;
+    header("Location: $raiz/index.php?redirect=true");
+    exit();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UD4. Tarea</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+
+<header class="bg-primary text-white text-center py-3">
+    <h1>Gestión de tareas</h1>
+    <p>Solución tarea unidad 4 de DWCS</p>
+</header>
