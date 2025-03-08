@@ -33,6 +33,7 @@
                                 $nombre = $usuario['nombre'];
                                 $apellidos = $usuario['apellidos'];
                                 $username = $usuario['username'];
+                                $rol = $usuario['rol'];
                         ?>
                             <input type="hidden" name="id" value="<?php echo $id ?>">
                             <?php include_once('formUsuario.php'); ?>

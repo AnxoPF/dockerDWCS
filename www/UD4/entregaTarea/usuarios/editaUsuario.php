@@ -28,6 +28,7 @@
                         $apellidos = $_POST['apellidos'];
                         $username = $_POST['username'];
                         $contrasena = $_POST['contrasena'];
+                        $rol = $_POST['rol'];
                         $error = false;
                         //verificar nombre
                         if (!validarCampoTexto($nombre))
@@ -57,7 +58,7 @@
                         {
                             require_once('../modelo/pdo.php');
                             if (empty($contrasena)) $contrasena = null;
-                            $resultado = actualizaUsuario($id, filtraCampo($nombre), filtraCampo($apellidos), filtraCampo($username), $contrasena);
+                            $resultado = actualizaUsuario($id, filtraCampo($nombre), filtraCampo($apellidos), filtraCampo($username), $contrasena, $rol);
                             if ($resultado[0])
                             {
                                 echo '<div class="alert alert-success" role="alert">Usuario actualizado correctamente.</div>';

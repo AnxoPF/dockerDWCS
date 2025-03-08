@@ -8,7 +8,11 @@ function conecta($host, $user, $pass, $db)
 
 function conectaTareas()
 {
-    return conecta('db', 'root', 'test', 'tareas');
+    $host = $_ENV['DARABASE_HOST'];
+    $user = $_ENV['DATABASE_USER'];
+    $pass = $_ENV['DATABASE_PASSWORD'];
+    $name = $_ENV['DATABASE_NAME'];
+    return conecta($host, $user, $pass, $name);
 }
 
 function cerrarConexion($conexion)
@@ -21,7 +25,10 @@ function cerrarConexion($conexion)
 function creaDB()
 {
     try {
-        $conexion = conecta('db', 'root', 'test', null);
+        $host = $_ENV['DATABASE_HOST'];
+        $user = $_ENV['DATABASE_USER'];
+        $pass = $_ENV['DATABASE_PASSWORD'];
+        $conexion = conecta($host, $user, $pass, null);
         
         if ($conexion->connect_error)
         {
@@ -77,7 +84,14 @@ function createTablaUsuarios()
                 return [false, 'La tabla "usuarios" ya existía.'];
             }
 
-            $sql = 'CREATE TABLE `usuarios` (`id` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(50) NOT NULL , `nombre` VARCHAR(50) NOT NULL , `apellidos` VARCHAR(100) NOT NULL , `contrasena` VARCHAR(100) NOT NULL , PRIMARY KEY (`id`)) ';
+            $sql = 'CREATE TABLE `usuarios` (
+                `id` INT NOT NULL AUTO_INCREMENT , 
+                `username` VARCHAR(50) NOT NULL , 
+                `rol` INT DEFAULT 0, 
+                `nombre` VARCHAR(50) NOT NULL , 
+                `apellidos` VARCHAR(100) NOT NULL , 
+                `contrasena` VARCHAR(100) NOT NULL , 
+                PRIMARY KEY (`id`)) ';
             if ($conexion->query($sql))
             {
                 return [true, 'Tabla "usuarios" creada correctamente'];

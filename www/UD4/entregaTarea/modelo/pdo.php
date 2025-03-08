@@ -1,10 +1,10 @@
 <?php
 
 function conectarPDO() {
-    $servername = $_ENV['DB_HOST'];
-    $username = $_ENV['DB_USER'];
-    $password = $_ENV['DB_PASS'];
-    $dbname = $_ENV['DB_NAME'];
+    $servername = $_ENV['DATABASE_HOST'];
+    $username = $_ENV['DATABASE_USER'];
+    $password = $_ENV['DATABASE_PASSWORD'];
+    $dbname = $_ENV['DATABASE_NAME'];
 
     $conPDO = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $conPDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -14,8 +14,10 @@ function conectarPDO() {
 function listaUsuarios() {
     try {
         $con = conectarPDO();
-        $stmt = $con->prepare('SELECT id, username, nombre, apellidos FROM usuarios');
+        $stmt = $con->prepare('SELECT id, username, nombre, apellidos, rol, contrasena FROM usuarios');
         $stmt->execute();
+
+        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $resultados = $stmt->fetchAll();
         return [true, $resultados];
     } catch (PDOException $e) {
@@ -53,16 +55,20 @@ function listaTareasPDO($id_usuario, $estado = null) {
     }
 }
 
-function nuevoUsuario($nombre, $apellidos, $username, $contrasena) {
+function nuevoUsuario($nombre, $apellidos, $username, $contrasena, $rol=0) {
     try {
         $con = conectarPDO();
-        $stmt = $con->prepare("INSERT INTO usuarios (nombre, apellidos, username, contrasena) 
-                               VALUES (:nombre, :apellidos, :username, :contrasena)");
+        $stmt = $con->prepare("INSERT INTO usuarios (nombre, apellidos, username, rol, contrasena) 
+                               VALUES (:nombre, :apellidos, :username, :rol, :contrasena)");
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':apellidos', $apellidos);
         $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':contrasena', $contrasena);
+        $stmt->bindParam(':rol', $rol);
+        $hasheado = password_hash($contrasena, PASSWORD_DEFAULT)
+        $stmt->bindParam(':contrasena', $hasheado);
         $stmt->execute();
+
+        $stmt->closeCursps();
 
         return [true, null];
     } catch (PDOException $e) {
@@ -72,10 +78,10 @@ function nuevoUsuario($nombre, $apellidos, $username, $contrasena) {
     }
 }
 
-function actualizaUsuario($id, $nombre, $apellidos, $username, $contrasena = null) {
+function actualizaUsuario($id, $nombre, $apellidos, $username, $contrasena, $rol) {
     try {
         $con = conectarPDO();
-        $sql = "UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, username = :username";
+        $sql = "UPDATE usuarios SET nombre = :nombre, apellidos = :apellidos, username = :username, rol = :rol";
         if ($contrasena) {
             $sql .= ", contrasena = :contrasena";
         }
@@ -85,11 +91,15 @@ function actualizaUsuario($id, $nombre, $apellidos, $username, $contrasena = nul
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':apellidos', $apellidos);
         $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        if ($contrasena) {
-            $stmt->bindParam(':contrasena', $contrasena);
+        $stmt->bindParam(':rol', $rol);
+        $stmt->bindParam(':id', $id);
+        if (isset($contrasena)) {
+            $hasheado = password_hash($contrasena, PASSWORD_DEFAULT);
+            $stmt->bindParam(':contrasena', $hasheado);
         }
         $stmt->execute();
+
+        $stmt->closeCursor();
 
         return [true, null];
     } catch (PDOException $e) {
