@@ -9,7 +9,7 @@
             </li>
             <!--Menú admin-->
             <?php
-            if (checkAdmin())
+            if (checkAdmin()) // Si somos admin, nos mostrará las opciones del menú de dentro del IF
             {
             ?>
             <li class="nav-item">
@@ -35,7 +35,8 @@
             <?php
             }
             ?>
-            <!--Menú registrados-->
+            <!--Menú registrados
+                Esta es la unica parte del menu que veremos si no somos admin. Si somos admin también la veremos -->
             <li class="nav-item">
                 <a class="nav-link" href="<?php echo $base_url ?>/../tareas/nuevaForm.php">
                     Nueva tarea
@@ -54,10 +55,10 @@
             
         </ul>
     </div>
-    <?php $valorTema = isset($_COOKIE['tema']) ? $_COOKIE['tema'] : "light"; ?>
-    <form class="m-3 w-50" action="<?php echo $base_url ?>/../controlador/tema.php" method="post">
+    <?php $valorTema = isset($_COOKIE['tema']) ? $_COOKIE['tema'] : "light"; // Le damos a la variable valorTema un valor dependiendo de si ya existe la cookie "tema". En caso afirmativo, el valor de la cookie. En caso contrario, "light" ?>
+    <form class="m-3 w-50" action="<?php echo $base_url ?>/../controlador/tema.php" method="post"> <!-- Formulario para el tema -->
         <select id="tema" name="tema" class="form-select mb-2" aria-label="Selector de tema">
-            <option value="light" <?php echo $valorTema=='light' ? 'selected' : ''; ?> > Claro</option>
+            <option value="light" <?php echo $valorTema=='light' ? 'selected' : ''; ?> > Claro</option> <!-- Comprueba en cada opción si es ese mismo valor el que ya está seleccionado -->
             <option value="dark" <?php echo $valorTema=='dark' ? 'selected' : ''; ?> >Oscuro</option>
             <option value="auto" <?php echo $valorTema=='auto' ? 'selected' : ''; ?> >Automático</option>
         </select>

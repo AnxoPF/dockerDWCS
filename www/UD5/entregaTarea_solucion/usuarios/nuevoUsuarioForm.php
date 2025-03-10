@@ -1,6 +1,6 @@
 <?php
     require_once('../login/sesiones.php');
-    if (!checkAdmin()) redirectIndex();
+    if (!checkAdmin()) redirectIndex(); // Si no somos admin nos redirigirá al index
 ?>
     <?php include_once('../vista/header.php'); ?>
 

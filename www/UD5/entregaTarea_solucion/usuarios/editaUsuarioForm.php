@@ -19,18 +19,19 @@
                     <form action="editaUsuario.php" method="POST" class="mb-5 w-50">
                         <?php
                         require_once('../modelo/pdo.php');
-                        if (!empty($_GET))
+                        if (!empty($_GET)) // Si el GET NO está vacío
                         {
-                            $id = $_GET['id'];
-                            $usuario = buscaUsuario($id);
-                            if (!empty($id) && $usuario)
+                            $id = $_GET['id']; // Almacena el ID recibido a través del get en una variable
+                            $usuario = buscaUsuario($id); // Usa ese mismo id para buscar al usuario en la BBDD con la función buscaUsuario, que devolverá un objeto Usuario con los valores correspondientes si existe
+                            if (!empty($id) && $usuario) // Si el id NO está vacío y el usuario existe
                             {
+                                // Almacena los valores Nombre, Apellidos, Username y Rol del usuario en variables, a través de los getters de la clase Usuario
                                 $nombre = $usuario->getNombre();
                                 $apellidos = $usuario->getApellidos();
                                 $username = $usuario->getUsername();
                                 $rol = $usuario->getRol();
                         ?>
-                            <input type="hidden" name="id" value="<?php echo $id ?>">
+                            <input type="hidden" name="id" value="<?php echo $id //Almacena de antemano el valor del id del usuario que se está editando, sin mostrarlo al público ?>"> 
                             <?php include_once('formUsuario.php'); ?>
                             <div class="mb-3">
                                 <label for="contrasena" class="form-label">Contraseña</label>

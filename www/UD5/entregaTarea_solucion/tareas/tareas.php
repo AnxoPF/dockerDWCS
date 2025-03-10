@@ -1,5 +1,5 @@
 <?php
-    require_once('../login/sesiones.php');
+    require_once('../login/sesiones.php'); // Si no existe la sesión nos redirigirá al login
 ?>
     <?php include_once('../vista/header.php'); ?>
 
@@ -22,17 +22,19 @@
                     //Si es usuario registrado, recuperamos el id de sesión
                     $resultado = null;
                     require_once('../modelo/pdo.php');
-                    if (!checkAdmin()){
+                    if (!checkAdmin()){ // En caso de no ser admin, se recupera el ID de sesión para mostrar las tareas que le pertenecen al usuario con dicho ID
                         $id_registrado = $_SESSION['usuario']->getId();
                         $resultado = listaTareasPDO($id_registrado, null);
                     }
-                    elseif (!empty($_GET))
+                    elseif (!empty($_GET)) // Si el GET no está vacío
                     {
+                        // Recuperamos en una variable el parámetro estado si lo hay, y el id de usuario
                         $estado = isset($_GET['estado']) ? $_GET['estado'] : null;
                         $id_usuario = $_GET['id_usuario'];
+                        // Y mostramos concretamente las tareas que pertenecen al usuario del ID, y que coincidan con el estado también
                         $resultado = listaTareasPDO($id_usuario, $estado);
                     }
-                    else
+                    else // Si no se cumplen las anteriores, se da por hecho que somos admin y muestra todas las tareas sin restricciones
                     {
                         require_once('../modelo/mysqli.php');
                         $resultado = listaTareas();
@@ -61,7 +63,7 @@
                                         foreach ($lista as $tarea)
                                         {
                                             echo '<tr>';
-                                            echo '<td>' . $tarea->getId() . '</td>';
+                                            echo '<td>' . $tarea->getId() . '</td>'; // Recupera los valores del objeto tarea a través de los getters
                                             echo '<td>' . $tarea->getTitulo() . '</td>';
                                             echo '<td>' . $tarea->getDescripcion() . '</td>';
                                             echo '<td>' . $tarea->getEstado()->descripcion() . '</td>';

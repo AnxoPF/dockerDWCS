@@ -1,8 +1,8 @@
 <?php
-    require_once('login/sesiones.php');
+    require_once('login/sesiones.php'); // sesiones.php nos redirigirá automáticamente a login.php si no existe el parametro usuario en la sesión.
 ?>
 
-<?php include_once('vista/header.php'); ?>
+<?php include_once('vista/header.php'); // En el header se incluye ?> 
 
     <div class="container-fluid">
         <div class="row">

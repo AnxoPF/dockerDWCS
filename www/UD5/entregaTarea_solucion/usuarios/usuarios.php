@@ -1,6 +1,6 @@
 <?php
     require_once('../login/sesiones.php');
-    if (!checkAdmin()) redirectIndex();
+    if (!checkAdmin()) redirectIndex(); // Si no somos admin nos redirigirá al index
 ?>
     <?php include_once('../vista/header.php'); ?>
 
@@ -20,8 +20,8 @@
                     require_once('../modelo/pdo.php');
                     require_once('../modelo/entity/Usuario.php');
                     require_once('../modelo/entity/Rol.php');
-                    $resultado = listaUsuarios();
-                    if ($resultado[0])
+                    $resultado = listaUsuarios(); // Recoge los usuarios en la variable resultado a través de la función listaUsuarios
+                    if ($resultado[0]) // Si resultado[0] devuelve true, significa que no ha habido errores, y muestra la tabla con los usuarios
                     {
                 ?>
                     <div class="table">
@@ -38,12 +38,12 @@
                             </thead>
                             <tbody>
                                 <?php
-                                    $lista = $resultado[1];
-                                    if (count($lista) > 0)
+                                    $lista = $resultado[1]; // Guarda los usuarios en la variable lista
+                                    if (count($lista) > 0) 
                                     {
-                                        foreach ($lista as $usuario)
+                                        foreach ($lista as $usuario) // Con un foreach, guarda cada usuario de lista en una variable usuario
                                         {
-                                            echo '<tr>';
+                                            echo '<tr>'; // En cada columna recupera la información del usuario con el getter
                                             echo '<td>' . $usuario->getId() . '</td>';
                                             echo '<td>' . $usuario->getNombre() . '</td>';
                                             echo '<td>' . $usuario->getApellidos() . '</td>';

@@ -11,6 +11,7 @@ class Usuario
     private String $contrasena;
     private Rol $rol;
 
+    // Constructor de la clase Usuario. No se incluye el id en el constructor, y el rol por defecto es el de usuario
     public function __construct(String $username = '', String $nombre = '', String $apellidos = '', String $contrasena = '', Rol $rol = Rol::USER) 
     {
         $this->id = 0;
@@ -21,6 +22,7 @@ class Usuario
         $this->rol = $rol;
     }
 
+    // Getters y setters 
     public function getId(): int 
     {
         return $this->id;
@@ -81,42 +83,45 @@ class Usuario
         $this->rol = $rol;
     }
 
+    // Función para validar los parámetros de un usuario, que se entregarán a través de un array
     public static function validate(array $data): array 
     {
+        // Almacenará los mensajes de error en este array en función del parámetro que de error
         $errors = [];
 
+        // Si el parámetro username del array está vacío, guardará un error
         if (empty($data['username'])) 
         {
             $errors['username'] = 'El nombre de usuario no puede estar vacío';
         } 
-        elseif (strlen($data['username']) < 4) 
+        elseif (strlen($data['username']) < 4) // Si el tamaño de username es menor que 4, error
         {
             $errors['username'] = 'El nombre de usuario debe tener al menos 3 caracteres';
         }
 
-        if (empty($data['nombre'])) 
+        if (empty($data['nombre']))  // Si el parámetro nombre está vacío
         {
             $errors['nombre'] = 'El nombre no puede estar vacío';
         } 
-        elseif (strlen($data['nombre']) < 4) 
+        elseif (strlen($data['nombre']) < 4) // SI el parámetro nombre tiene un tamaño menor que 4
         {
             $errors['nombre'] = 'El nombre debe tener al menos 2 caracteres';
         }
 
-        if (empty($data['apellidos'])) 
+        if (empty($data['apellidos']))  // Si el parámetro apellidos está vacío
         {
             $errors['apellidos'] = 'Los apellidos no pueden estar vacíos';
         } 
-        elseif (strlen($data['apellidos']) < 4) 
+        elseif (strlen($data['apellidos']) < 4) // Si el tamaño del parámetro apellidos es menor que 4
         {
             $errors['apellidos'] = 'Los apellidos deben tener al menos 2 caracteres';
         }
 
-        if (empty($data['contrasena'])) 
+        if (empty($data['contrasena'])) // Si el parámetro contrasena está vacío
         {
             $errors['contrasena'] = 'La contraseña no puede estar vacía';
         } 
-        elseif (strlen($data['contrasena']) < 6) 
+        elseif (strlen($data['contrasena']) < 6) // Si el parámetro contrasena tiene un tamaño menor que 6
         {
             $errors['contrasena'] = 'La contraseña debe tener al menos 6 caracteres';
         }
@@ -127,9 +132,10 @@ class Usuario
             $errors['rol'] = 'El rol no es válido';
         }
 
-        return $errors;
+        return $errors; // Devuelve el array errors
     }
     
+    // Igual que la función anterior, pero elimina la parte de contrasena del array de errores.
     public static function validateWithoutPassword(array $data): array 
     {
         $errors = self::validate($data);

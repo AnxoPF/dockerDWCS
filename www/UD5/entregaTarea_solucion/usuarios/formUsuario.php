@@ -2,6 +2,8 @@
 
 <div class="mb-3">
     <label for="nombre" class="form-label">Nombre</label>
+<!-- Comprueba en los distintos campos si ya está inicializada determinada variable, que significaría que se está editando un usuario, por lo que el formulario
+ mostraría ya el valor de base inicialmente. -->
     <input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo isset($nombre) ? ($nombre) : '' ?>" required>
 </div>
 <div class="mb-3">

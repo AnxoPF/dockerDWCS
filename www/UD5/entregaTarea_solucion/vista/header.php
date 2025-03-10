@@ -1,7 +1,9 @@
 <?php
+    // Variable que recoge el valor de la cookie "tema" si es que existe, o "light" en caso de que no, por defecto.
     $temaBootstrap = isset($_COOKIE['tema']) ? $_COOKIE['tema'] : "light";
 ?>
 <!DOCTYPE html>
+<!-- Introduce en la etiqueta html el valor de la cookie que cambiará el color del tema -->
 <html lang="es" data-bs-theme="<?php echo $temaBootstrap; ?>">
 <head>
     <meta charset="UTF-8">

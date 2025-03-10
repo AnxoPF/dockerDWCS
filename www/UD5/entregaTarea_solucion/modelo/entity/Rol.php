@@ -6,6 +6,7 @@ enum Rol: int {
 
     public function descripcion(): string {
         return match($this) {
+            // En caso de ser admin, la función devolvera una cosa, y si es admin otra.
             Rol::USER => 'Usuario registrado',
             Rol::ADMIN => 'Administrador',
         };

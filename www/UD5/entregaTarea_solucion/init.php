@@ -1,6 +1,6 @@
 <?php
     require_once('login/sesiones.php');
-    if (!checkAdmin()) header("Location: index.php?redirect=true");
+    if (!checkAdmin()) header("Location: index.php?redirect=true"); // Si no somos admin nos redirigirá al index
 ?>
     <?php include_once('vista/header.php'); ?>
 

@@ -5,12 +5,14 @@ require_once __DIR__ . '/Usuario.php';
 
 class Tarea 
 {
+    // Propiedades de la clase Tarea
     private int $id;
     private string $titulo;
     private string $descripcion;
     private Estado $estado;
     private Usuario $usuario;
 
+    // Constructor, donde no se le pasa el id, y el valor por defecto del Estado es Pendiente
     public function __construct(string $titulo, string $descripcion, Usuario $usuario, Estado $estado = Estado::PENDIENTE) 
     {
         $this->id = 0;
@@ -20,6 +22,7 @@ class Tarea
         $this->usuario = $usuario;
     }
 
+    // Getters y setters
     public function getId(): int 
     {
         return $this->id;
@@ -70,6 +73,7 @@ class Tarea
         $this->usuario = $usuario;
     }
 
+    // Función de validación de los datos como en Usuario
     public static function validate(array $data): array 
     {
         $errors = [];
