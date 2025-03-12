@@ -43,15 +43,16 @@
 
                 <div class="container justify-content-between">
                 <?php
-                if (!empty($_GET))
+                if (!empty($_GET)) // Si el GET no está vacío
                 {
-                    $id = $_GET['id'];
-                    if (!empty($id)) {
-                        if (checkAdmin() || esPropietarioTarea($_SESSION['usuario']->getId(), $id))
+                    $id = $_GET['id']; // Recoge el id en una variable
+                    if (!empty($id)) { // Si el id no está vacío
+                        if (checkAdmin() || esPropietarioTarea($_SESSION['usuario']->getId(), $id)) // Comprueba si es admin o si el usuario de la sesión es propietario de la tarea con el id que recibimos del get
                         {
-                            $tarea = buscaTarea($id);
-                            if ($tarea)
+                            $tarea = buscaTarea($id); // Busca la tarea del id, devolvera un objeto tarea
+                            if ($tarea) // Si finalmente existe la tarea
                             {                                
+                                // Recoge en variables los valores de los parámetros del objeto tarea que hemos recuperado antes con el id, a través de los getters
                                 $titulo = $tarea->getTitulo();
                                 $descripcion = $tarea->getDescripcion();
                                 $estado = $tarea->getEstado();

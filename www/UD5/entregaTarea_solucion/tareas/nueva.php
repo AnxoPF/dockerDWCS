@@ -16,11 +16,14 @@ $response = 'error';
 $messages = array();
 $location = 'nuevaForm.php';
 
+// Si no es admin, recupera el id del usuario de la sesion
 if (!checkAdmin()) $id_usuario = $_SESSION['usuario']->getId();
 
+// Usa la función de validación del objeto tarea para guardar los posibles errores
 $errores = Tarea::validate($_POST);
 
-if (empty($errores))
+// Si no hay errores, recupera el objeto usuario con el id, y crea una nueva tarea con los datos del formulario
+if (empty($errores)) 
 {
     $usuario = buscaUsuarioMysqli($id_usuario);
     $tarea = new Tarea(filtraCampo($titulo), filtraCampo($descripcion), $usuario, Estado::from($estado));
