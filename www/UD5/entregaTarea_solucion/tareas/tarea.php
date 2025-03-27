@@ -8,7 +8,7 @@
     require_once('../modelo/entity/Tarea.php');
     require_once('../modelo/entity/Fichero.php');
     require_once('../modelo/entity/Estado.php');
-    require_once('../exceptions/DatabaseException.php');
+    require_once('../modelo/exceptions/DatabaseException.php');
 
     // Función para determinar el tipo de archivo y devolver el icono correspondiente
     function getFileIcon($filename) {
