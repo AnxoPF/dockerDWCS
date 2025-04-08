@@ -2,14 +2,14 @@
 
 // Recuerda descargar el framework Flight
 
-require_once 'flight/Flight.php';
+require_once '../flight/Flight.php';
 
 $host = $_ENV['DATABASE_HOST'];
 $name = $_ENV['DATABASE_TEST'];
 $user = $_ENV['DATABASE_USER'];
 $pass = $_ENV['DATABASE_PASSWORD'];
 
-Flight::register('db', 'PDO', array("mysql:host=$host;dbname=$name", $user, $pass));
+Flight::register('db', 'PDO', array('mysql:host=db;dbname=pruebas','root','test'));
 
 Flight::route('GET /clientes(/@id)', function($id = null) {
     if ($id)
